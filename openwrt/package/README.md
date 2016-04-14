@@ -1,53 +1,19 @@
-# rpi-openwrt-templog
-Log RPi temperature to OpenWRT Server and display html page
+# package
 
 
 Table of contents
 -----------------
 
 - [Introduction](#introduction)
-- [How to](#how-to)
-- [TODO](#todo)
 - [License](#license)
 
 
 
 Introduction
 ------------
+The rpi-server compiled as package ready for installation on any Atheros AR9331 compatible processor.
 
-Simple set of programs that logs the temperature of an Raspberry Pi running OpenELEC, send the data to an TP-Link MR3020 runnning OpenWRT wich display on html page, to view from any browser.
-
-
-
-How to
-------------
-Each side has it's configuration, see the following folders for more information:
-
-- openwrt => Router acting as server, receiving rpi data, router can be exposed to the internet
-
-- rpi => Raspberry pi acting as client in the same subnet, sending data to openwrt
-
-
-
-Compatibility
-------------
-- Raspberry Pi 1 Model B running OpenELEC 6.0.3
-
-- OpenELEC running Python 2.7.3
-
-- TP-Link MR3020 v1, running OpenWrt GCC 5.3.0 r49161, without any hardware mod
-
-
-
-Other
-------------
-Both machines **MUST** have fixed IP address.
-
-
-
-TODO
-------------
-- Improve Python code
+The Makefile that compiled the package is also available.
 
 
 
@@ -75,5 +41,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 

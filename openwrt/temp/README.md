@@ -1,5 +1,4 @@
-# rpi-openwrt-templog
-Log RPi temperature to OpenWRT Server and display html page
+# temp
 
 
 Table of contents
@@ -7,47 +6,43 @@ Table of contents
 
 - [Introduction](#introduction)
 - [How to](#how-to)
-- [TODO](#todo)
+- [Different config](#different-config)
+- [Example](#example)
 - [License](#license)
+- [Dygraphs License](#dygraphs-license)
 
 
 
 Introduction
 ------------
+Running uHTTPd tiny single threaded HTTP server
 
-Simple set of programs that logs the temperature of an Raspberry Pi running OpenELEC, send the data to an TP-Link MR3020 runnning OpenWRT wich display on html page, to view from any browser.
+This folder must be under the `/www` directory
 
 
 
 How to
 ------------
-Each side has it's configuration, see the following folders for more information:
+Open browser and go to `openwrtIP/temp`
 
-- openwrt => Router acting as server, receiving rpi data, router can be exposed to the internet
+- OpenWRT IP address is 192.168.1.50 => `192.168.1.50/temp`
 
-- rpi => Raspberry pi acting as client in the same subnet, sending data to openwrt
+- If diferent folder name => `openwrtIP/name`
 
 
 
-Compatibility
+Different config
 ------------
-- Raspberry Pi 1 Model B running OpenELEC 6.0.3
+In case of different file name with the readings:
 
-- OpenELEC running Python 2.7.3
-
-- TP-Link MR3020 v1, running OpenWrt GCC 5.3.0 r49161, without any hardware mod
-
+1. Open .html file
+2. Line 11 change `var fileName = "temp.log"` to the correct name insted of "temp.log".
 
 
-Other
+
+Example
 ------------
-Both machines **MUST** have fixed IP address.
-
-
-
-TODO
-------------
-- Improve Python code
+photo
 
 
 
@@ -77,3 +72,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 
+Dygraphs License
+------------
+http://dygraphs.com/legal.html

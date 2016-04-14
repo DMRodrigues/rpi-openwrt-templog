@@ -1,5 +1,4 @@
-# rpi-openwrt-templog
-Log RPi temperature to OpenWRT Server and display html page
+# rpi
 
 
 Table of contents
@@ -7,47 +6,46 @@ Table of contents
 
 - [Introduction](#introduction)
 - [How to](#how-to)
-- [TODO](#todo)
+- [Start Up](#start-up)
+- [Different config](#different-config)
 - [License](#license)
-
 
 
 Introduction
 ------------
+Simple python script that creates connection server and every minute executes command to get temperature and sends it.
 
-Simple set of programs that logs the temperature of an Raspberry Pi running OpenELEC, send the data to an TP-Link MR3020 runnning OpenWRT wich display on html page, to view from any browser.
+**IMPORTANT:** Must know the server IP (OpenWRT)
+
+If server goes down for any reason, it starts saving data in backup file. Then tries to create new connection to the server to send all the backup data once.
 
 
 
 How to
 ------------
-Each side has it's configuration, see the following folders for more information:
-
-- openwrt => Router acting as server, receiving rpi data, router can be exposed to the internet
-
-- rpi => Raspberry pi acting as client in the same subnet, sending data to openwrt
+1. send the script to the RPi with scp: `scp script root@IP:/storage`
+2. ssh to RPi and run the script: `python script.py -i serverIP &`
 
 
 
-Compatibility
+Start Up
 ------------
-- Raspberry Pi 1 Model B running OpenELEC 6.0.3
+To run the script at startup do [more info](http://wiki.openelec.tv/index.php/Autostart.sh):
 
-- OpenELEC running Python 2.7.3
+1. ssh to RPi
+2. the execute `nano /storage/.config/autostart.sh`
+3. paste ``(
+ python /storage/script.py -i 192.168.1.60;
+) &``
 
-- TP-Link MR3020 v1, running OpenWrt GCC 5.3.0 r49161, without any hardware mod
 
 
-
-Other
+Different config
 ------------
-Both machines **MUST** have fixed IP address.
+It's possible to chose a diferent folder to save the logs and different port
 
-
-
-TODO
-------------
-- Improve Python code
+- Different backup file name: `python script.py -i serverIP -f /tmp/tmp.txt &`
+- Different port: `python script.py -i serverIP -p port &`
 
 
 
@@ -75,5 +73,4 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
 
