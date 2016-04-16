@@ -7,7 +7,7 @@ Table of contents
 - [Introduction](#introduction)
 - [How to](#how-to)
 - [Different config](#different-config)
-- [Example](#example)
+- [More info](#more-info)
 - [License](#license)
 - [Dygraphs License](#dygraphs-license)
 
@@ -15,9 +15,7 @@ Table of contents
 
 Introduction
 ------------
-Running uHTTPd tiny single threaded HTTP server
-
-This folder must be under the `/www` directory
+Running uHTTPd tiny single threaded HTTP server, and this folder must be under the `/www` directory.
 
 
 
@@ -39,10 +37,17 @@ In case of different file name with the readings:
 2. Line 11 change `var fileName = "temp.log"` to the correct name insted of "temp.log".
 
 
+If want link that redirect from openwrtIP instead of redirecting to `/cgi-bin/luci`.
 
-Example
+1. Open `/www/index.html`
+2. comment `<meta http-equiv="refresh" content="0; URL=/cgi-bin/luci" />`
+3. add something like `<a id="try" href="/temp">RaspberryPI Temperature</a>`
+
+
+
+More info
 ------------
-photo
+For more info about dygraphs [click](http://dygraphs.com) to see examples [click](http://dygraphs.com/gallery)
 
 
 

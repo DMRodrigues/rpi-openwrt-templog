@@ -15,18 +15,23 @@
 #include <arpa/inet.h>
 
 #define MSGLEN 25
+#define PORT 8000
+
+#define UINTSIZE sizeof(unsigned int)
 
 /* limit the lines so that show last 24 hours
- * one line is 1 minute, 60min*24h, plus 5 for error, 0 => offset + 5 c*/
-#define MAXLINES (1445 + 5)
-#define MAXOFF (MAXLINES * MSGLEN)
+ * one line is 1 minute, 60min*24h, plus 1 for error, 0 => offset last */
+#define LINES 1441
+#define LINESOFF (LINES * MSGLEN)
+#define OFFSETSIZE (UINTSIZE + strlen("\n"))
 
-#define PORT 8000
+#define MAXOFF (LINESOFF + OFFSETSIZE)
+
+int ctrl = 0;
 
 const char *FILENAME = "/www/temp/temp.log";
 const mode_t create_mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH;
 
-int ctrl = 0;
 
 void handle_sig(int signum)
 {
@@ -52,14 +57,39 @@ inline void print_usage(const char *program_name)
 	printf("  -h     	prints this menu.\n\n");
 }
 
+ssize_t read_all(int socket, void *buffer, ssize_t size)
+{
+	ssize_t i = 0, res = 0;
+    while (i < size)
+    {
+		res = read(socket, buffer + i, size - i);
+		if (res < 1) break;
+		i += res;
+	}
+	return i;
+}
+
+ssize_t write_all(int socket, void *buffer, ssize_t size)
+{
+	ssize_t i = 0, res = 0;
+    while (i < size)
+    {
+		res = write(socket, buffer + i, size - i);
+		if (res < 1) break;
+		i += res;
+	}
+	return i;
+}
+
 int main(int argc, char *argv[])
-{   
+{
+	ssize_t size;
 	socklen_t addrlen;
 	char buffer[MSGLEN];
-	unsigned int count = 5;
+	unsigned int count = OFFSETSIZE;
 	const char *file_name = NULL;
 	struct sockaddr_in serv_addr, cli_addr;
-	int sockfd, clientfd, file, size, opt, port, p_flag = 0, f_flag = 0;
+	int sockfd, clientfd, file, opt, port, p_flag = 0, f_flag = 0;
 
 	errno = 0; /* set errno */
 
@@ -94,7 +124,7 @@ int main(int argc, char *argv[])
 			file = creat(file_name, create_mode);
 			if(file == -1)
 				error_exit("ERROR creating file");
-			write(file, &count, sizeof(count)); /* start from beginning = 5*/
+			write(file, &count, UINTSIZE); /* start from beginning */
 			write(file, "\n", strlen("\n"));
 		}
 		else
@@ -103,7 +133,7 @@ int main(int argc, char *argv[])
 
 	/* assume success, raw data, where to start writing */
 	lseek(file, 0, SEEK_SET);
-	read(file, &count, sizeof(count));
+	read(file, &count, UINTSIZE);
 	lseek(file, count, SEEK_SET);
 
 	/* create streaming socket */
@@ -142,29 +172,26 @@ int main(int argc, char *argv[])
 		{
 			bzero(buffer, MSGLEN);
 
-			size = read(clientfd, buffer, MSGLEN);
+			size = read_all(clientfd, buffer, MSGLEN);
 
-			if(size == 0) /* error_exit("ERROR pipe broken, resolve and restart"); */
-				break;
+			if(size < 1)
+				break; /* error_exit("ERROR reading from socket, resolve and restart"); */
 
-			if(size < 0)
-				error_exit("ERROR reading from socket, resolve and restart");
-
-			write(clientfd, buffer, size); /* assume success */
+			write_all(clientfd, buffer, size); /* assume success */
 
 			if(write(file, buffer, size) != size)
-				error_exit("ERROR writing, resolve and restart");
+				error_exit("ERROR writing file, resolve and restart");
 
 			if(count > MAXOFF) { /* reset offset, begin */
-				count = 5;
+				count = OFFSETSIZE;
 				lseek(file, 0, SEEK_SET);
-				write(file, &count, sizeof(count));
+				write(file, &count, UINTSIZE);
 				lseek(file, count, SEEK_SET);
 			}
 			else { /* save current offset */
-				lseek(file, 0, SEEK_SET);
 				count += MSGLEN;
-				write(file, &count, sizeof(count));
+				lseek(file, 0, SEEK_SET);
+				write(file, &count, UINTSIZE);
 				lseek(file, count, SEEK_SET);
 			}
 

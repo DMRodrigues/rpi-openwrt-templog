@@ -11,25 +11,25 @@
 var fileName = "temp.log"
 
 function addZero(num) {
-   var s=num+"";
-   if (s.length < 2) s="0"+s;
+   var s = num + "";
+   if (s.length < 2) s = "0" + s;
    return s;
 }
 function dateFormat(indate) {
    var hh = addZero(indate.getHours());
    var MM = addZero(indate.getMinutes());
    var dd = addZero(indate.getDate());
-   var mm = addZero(indate.getMonth()+1);
+   var mm = addZero(indate.getMonth() + 1);
    var yyyy = addZero(indate.getFullYear());
-   return dd+'/'+mm+' '+hh+':'+MM;
+   return (dd + '/' + mm + ' ' + hh + ':' + MM + ' ');
 }
 
-
+		//2016 04 15 13 53 49
 var g = new Dygraph(document.getElementById("graphdiv"), fileName, {
    xValueParser: function(x) {
       var date = new Date(x.replace(
-      /^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
-      '$4:$5 $2/$3/$1'
+		  /^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/,
+		  '$4:$5:$6 $2/$3/$1' // hour:minute:second mothn/day/year
       ));
       return date.getTime();
    },
@@ -44,10 +44,10 @@ var g = new Dygraph(document.getElementById("graphdiv"), fileName, {
          }
       }
    },
-   labelsDivWidth: 300,
+   labelsDivWidth: 290,
    rollPeriod: 1,
    strokeWidth: 1.5,
-   labels: [ 'Date', 'CPU (ºC)', 'GPU (ºC)' ],
+   labels: [ 'Date', 'CPU(ºC)', 'GPU(ºC)' ],
    
    underlayCallback: function(ctx, area) {
       //var mm = calcMinMax(this);
@@ -82,7 +82,7 @@ var g = new Dygraph(document.getElementById("graphdiv"), fileName, {
 // Maneira mais simples de actualizar sem refresh page
 window.intervalId = setInterval(function() {
    g.updateOptions( { 'file': fileName } );
-}, 1000);
+}, 30000); // every 30 seconds update
 
 
 // Calculate the max y value in the Dygraph's data set.
@@ -101,8 +101,9 @@ function calcMax(g) {
 
 </script>
 
-<p></p>
+<br>
 
+<br>Current Temperature</br>
 <div>CPU: <span id="cpu"></span> ºC</div>
 <div>GPU: <span id="gpu"></span> ºC</div>
 

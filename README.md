@@ -7,6 +7,9 @@ Table of contents
 
 - [Introduction](#introduction)
 - [How to](#how-to)
+- [Compatibility](#compatibility)
+- [Example](#example)
+- [Other](#other)
 - [TODO](#todo)
 - [License](#license)
 
@@ -36,6 +39,21 @@ Compatibility
 - OpenELEC running Python 2.7.3
 
 - TP-Link MR3020 v1, running OpenWrt GCC 5.3.0 r49161, without any hardware mod
+
+
+
+Example
+------------
+
+- Example topology
+
+![topology](http://s22.postimg.org/w823f013l/top.png "topology")
+
+
+- html page
+
+![ex1](http://s24.postimg.org/9yylhbtdh/top2.png "ex1")
+![ex2](http://s30.postimg.org/gff1s7wsx/top3.png "ex2")
 
 
 

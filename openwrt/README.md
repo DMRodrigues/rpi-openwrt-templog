@@ -31,8 +31,9 @@ There are two options to run the server:
 - First method:
 
 1. use the Makefile to compile the code: `make`
-2. send the exec to the server with scp: `scp rpi-templog root@IP:/www/temp`
+2. send the exec to server with scp: `scp rpi-templog root@IP:/www/temp`
 3. then ssh to server and run the exec: `/www/temp/rpi-templog &`
+
 
 - Second method
 
