@@ -1,5 +1,5 @@
 # rpi-openwrt-templog
-Log RPi temperature to OpenWRT Server and display html page
+Log Raspberry Pi temperature to server with OpenWRT and display via web
 
 
 Table of contents
@@ -18,7 +18,7 @@ Table of contents
 Introduction
 ------------
 
-Simple set of programs that logs the temperature of an Raspberry Pi running OpenELEC, send the data to an TP-Link MR3020 runnning OpenWRT wich display on html page, to view from any browser.
+Simple set of programs that logs the temperature of an Raspberry Pi running OpenELEC, send the data to an TP-Link MR3020 runnning OpenWRT as server and display de data on html page, to view from any browser.
 
 
 
@@ -49,11 +49,13 @@ Example
 
 ![topology](http://s22.postimg.org/w823f013l/top.png "topology")
 
+- Web page
 
-- html page
+![temp](https://cdn.pbrd.co/images/iWdao5i.png "temp")
 
-![ex1](http://s24.postimg.org/9yylhbtdh/top2.png "ex1")
-![ex2](http://s30.postimg.org/gff1s7wsx/top3.png "ex2")
+  - Zoom in, and other functionalities
+
+![temp-zoom](https://cdn.pbrd.co/images/iWgIpQP.png "temp-zoom")
 
 
 

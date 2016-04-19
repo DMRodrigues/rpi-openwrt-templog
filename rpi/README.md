@@ -13,16 +13,17 @@ Table of contents
 
 Introduction
 ------------
-Simple python script that creates connection server and every minute executes command to get temperature and sends it.
+Simple python script that creates connection to server and every minute executes command to get temperatures and sends it.
 
-**IMPORTANT:** Must know the server IP (OpenWRT)
-
-If server goes down for any reason, it starts saving data in backup file. Then tries to create new connection to the server to send all the backup data once.
+If the server goes down, for any reason, it starts saving data in local backup file. Then tries to create new connection to the server to send all the backup data once.
 
 
 
 How to
 ------------
+
+**IMPORTANT:** Must know the server IP (OpenWRT)
+
 1. send the script to the RPi with scp: `scp script root@IP:/storage`
 2. ssh to RPi and run the script: `python script.py -i serverIP &`
 
@@ -35,7 +36,7 @@ To run the script at startup do [more info](http://wiki.openelec.tv/index.php/Au
 1. ssh to RPi
 2. the execute `nano /storage/.config/autostart.sh`
 3. paste ``(
- python /storage/script.py -i 192.168.1.60;
+ python /storage/script.py -i serverIP;
 ) &``
 
 
@@ -46,6 +47,7 @@ It's possible to chose a diferent folder to save the logs and different port
 
 - Different backup file name: `python script.py -i serverIP -f /tmp/tmp.txt &`
 - Different port: `python script.py -i serverIP -p port &`
+- Log in file 'script.log' what happens : `python script.py -i serverIP -l &`
 
 
 
