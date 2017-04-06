@@ -14,9 +14,11 @@ COMANDO = 'echo "$(date +\%Y\%m\%d\%H\%M\%S)","$(cputemp)","$(gputemp)"'
 # Limit the lines so that show last 24 hours
 # one line is 1 minute, 60min*24h, plus 1 for error, 0 => offset last */
 LINES = 1441
+MSGLEN = 25
+LINESOFF = LINES * MSGLEN
 
 logger = False
-fileName = "/storage/www/temp.log" # must be fixed, otherwise doesnt work
+fileName = "/storage/www/temp.log"
 
 
 def printUsage():
@@ -51,11 +53,10 @@ def initScript():
 
    # truncate/clean file
    try:
-      fd = open(fileName, 'w')
-      fd.truncate()
+      fd = open(fileName, 'w+')
       fd.close()
    except:
-      pass # ignorE
+      pass # ignore
 
    if logger:
       logging.info("Cleaned file => " + str(datetime.now()))
@@ -65,7 +66,7 @@ def initScript():
 
 def readSaveTemp():
    global logger
-   line = 0
+   position = 0 # beginning script is 0
 
    if logger:
       logging.info("Starting temperature logging => " + str(datetime.now()))   
@@ -74,15 +75,15 @@ def readSaveTemp():
       c = Popen(COMANDO, shell=True, stdout=PIPE)
       data = c.communicate()[0] # get data
 
-      fd = open(fileName, 'a')
-      fd.write(data) # save data
-      
-      line += 1
-      if line == LINES: # max 24h reached
-         fd.seek(0)
-         line = 0
+      if position >= LINESOFF: # max 24h reached
+         position = 0
 
-      fd.close()
+      fd = open(fileName, 'r+')
+      fd.seek(position, 0)   # go to last position
+      fd.write(data)        # save data
+      position = fd.tell(); # save current position
+      fd.close()            # close file for web update
+
       sleep(SLEEP) # sleep for 1 minute
    
    if logger:
